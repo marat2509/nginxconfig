@@ -145,7 +145,7 @@ const httpRedirectConfig = (domain, global, ipPortPairs, domainName, redirectDom
 
         if (global.tools.modularizedStructure.computed) {
             // Modularized
-            config.push(['include', 'nginxconfig.io/letsencrypt.conf']);
+            config.push(['include', 'conf.d/letsencrypt.conf']);
         } else {
             // Unified
             config.push(...Object.entries(letsEncryptConf(global)));
@@ -215,7 +215,7 @@ export default (domain, domains, global, ipPortPairs) => {
     if (global.tools.modularizedStructure.computed) {
         // Modularized
         serverConfig.push(['# security', '']);
-        serverConfig.push(['include', 'nginxconfig.io/security.conf']);
+        serverConfig.push(['include', 'conf.d/security.conf']);
     } else {
         // Unified
         serverConfig.push(...securityConf(domains, global));
@@ -249,13 +249,18 @@ export default (domain, domains, global, ipPortPairs) => {
         serverConfig.push(['# index.php', '']);
         serverConfig.push(['index', 'index.php']);
     }
+	if (domain.routing.index.computed === 'index.html') {
+		serverConfig.push(['# index.html', '']);
+		serverConfig.push(['index', 'index.html']);
+	}
 
+	
     // Fallback index.html or index.php
     if ((domain.routing.fallbackHtml.computed || domain.routing.fallbackPhp.computed)
         && (!domain.reverseProxy.reverseProxy.computed || domain.reverseProxy.path.computed !== '/')) {
         serverConfig.push([`# index.${domain.routing.fallbackHtml.computed ? 'html' : (domain.routing.fallbackPhp.computed ? 'php' : '')} fallback`, '']);
         serverConfig.push(['location /', {
-            try_files: `$uri $uri/ /index.${domain.routing.fallbackHtml.computed ? 'html' : (domain.routing.fallbackPhp.computed ? 'php?$query_string' : '')}`,
+            try_files: `$uri $uri/ =404`,
         }]);
     }
 
@@ -271,7 +276,7 @@ export default (domain, domains, global, ipPortPairs) => {
     if (domain.python.python.computed) {
         if (global.tools.modularizedStructure.computed) {
             // Modularized
-            serverConfig.push(['location /', { include: 'nginxconfig.io/python_uwsgi.conf' }]);
+            serverConfig.push(['location /', { include: 'conf.d/python_uwsgi.conf' }]);
         } else {
             // Unified
             serverConfig.push(['location /', pythonConf(global)]);
@@ -295,7 +300,7 @@ export default (domain, domains, global, ipPortPairs) => {
 
         if (global.tools.modularizedStructure.computed) {
             // Modularized
-            locConf.push(['include', 'nginxconfig.io/proxy.conf']);
+            locConf.push(['include', 'conf.d/proxy.conf']);
         } else {
             // Unified
             locConf.push(...Object.entries(proxyConf(global)));
@@ -309,15 +314,15 @@ export default (domain, domains, global, ipPortPairs) => {
     if (global.tools.modularizedStructure.computed) {
         // Modularized
         serverConfig.push(['# additional config', '']);
-        serverConfig.push(['include', 'nginxconfig.io/general.conf']);
+        serverConfig.push(['include', 'conf.d/general.conf']);
 
         if (!domain.https.forceHttps.computed && domain.https.certType.computed === 'letsEncrypt')
-            serverConfig.push(['include', 'nginxconfig.io/letsencrypt.conf']);
+            serverConfig.push(['include', 'conf.d/letsencrypt.conf']);
 
-        if (domain.php.wordPressRules.computed) serverConfig.push(['include', `nginxconfig.io/${domain.server.domain.computed}.wordpress.conf`]);
-        if (domain.php.drupalRules.computed) serverConfig.push(['include', 'nginxconfig.io/drupal.conf']);
-        if (domain.php.magentoRules.computed) serverConfig.push(['include', 'nginxconfig.io/magento.conf']);
-        if (domain.php.joomlaRules.computed) serverConfig.push(['include', 'nginxconfig.io/joomla.conf']);
+        if (domain.php.wordPressRules.computed) serverConfig.push(['include', `conf.d/${domain.server.domain.computed}.wordpress.conf`]);
+        if (domain.php.drupalRules.computed) serverConfig.push(['include', 'conf.d/drupal.conf']);
+        if (domain.php.magentoRules.computed) serverConfig.push(['include', 'conf.d/magento.conf']);
+        if (domain.php.joomlaRules.computed) serverConfig.push(['include', 'conf.d/joomla.conf']);
     } else {
         // Unified
         serverConfig.push(...Object.entries(generalConf(domains, global)));
@@ -355,7 +360,7 @@ export default (domain, domains, global, ipPortPairs) => {
             // Modularized
             serverConfig.push([loc, {
                 ...fastcgiPass,
-                include: 'nginxconfig.io/php_fastcgi.conf',
+                include: 'conf.d/php_fastcgi.conf',
             }]);
         } else {
             // Unified

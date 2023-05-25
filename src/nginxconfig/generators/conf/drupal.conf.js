@@ -45,19 +45,19 @@ export default global => {
 
     config['# Drupal: allow image styles to be handled by the CMS'] = '';
     config['location ~ ^/sites/[^/]+/files/styles/'] = {
-        try_files: '$uri /index.php?q=$uri&$args',
+        try_files: '$uri /index.php?q=$uri&$args =404',
     };
 
     config['# Drupal: handle private files'] = '';
     config['location ~ ^(/[a-z\\-]+)?/system/files/'] = {
-        try_files: '$uri /index.php?$query_string',
+        try_files: '$uri /index.php?$query_string =404',
     };
 
     if (global.security.limitReq.computed) {
         config['# Drupal: throttle user functions'] = '';
         config['location ~ ^/user/(?:login|register|password)'] = {
             limit_req: 'zone=login burst=2 nodelay',
-            try_files: '$uri /index.php?$query_string',
+            try_files: '$uri /index.php?$query_string =404',
         };
     }
 

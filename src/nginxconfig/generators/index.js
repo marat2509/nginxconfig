@@ -64,47 +64,47 @@ export default (domains, global) => {
             files[`${sitesDir}/${domain.server.domain.computed}.conf`] = toConf(websiteConf(domain, domains, global, ipPortPairs));
             // WordPress
             if (domains.some(d => d.php.wordPressRules.computed))
-                files[`nginxconfig.io/${domain.server.domain.computed}.wordpress.conf`] = toConf(wordPressConf(global, domain));
+                files[`conf.d/${domain.server.domain.computed}.wordpress.conf`] = toConf(wordPressConf(global, domain));
         }
 
         // Let's encrypt
         if (domains.some(d => d.https.certType.computed === 'letsEncrypt'))
-            files['nginxconfig.io/letsencrypt.conf'] = toConf(letsEncryptConf(global));
+            files['conf.d/letsencrypt.conf'] = toConf(letsEncryptConf(global));
 
         // Security
-        files['nginxconfig.io/security.conf'] = toConf(securityConf(domains, global));
+        files['conf.d/security.conf'] = toConf(securityConf(domains, global));
 
         // General
-        files['nginxconfig.io/general.conf'] = toConf(generalConf(domains, global));
+        files['conf.d/general.conf'] = toConf(generalConf(domains, global));
 
         // PHP
         if (domains.some(d => d.php.php.computed))
-            files['nginxconfig.io/php_fastcgi.conf'] = toConf(phpConf(domains));
+            files['conf.d/php_fastcgi.conf'] = toConf(phpConf(domains));
 
         // Python
         if (domains.some(d => d.python.python.computed))
-            files['nginxconfig.io/python_uwsgi.conf'] = toConf(pythonConf(global));
+            files['conf.d/python_uwsgi.conf'] = toConf(pythonConf(global));
 
         // Reverse proxy
         if (domains.some(d => d.reverseProxy.reverseProxy.computed))
-            files['nginxconfig.io/proxy.conf'] = toConf(proxyConf(global));
+            files['conf.d/proxy.conf'] = toConf(proxyConf(global));
 
         // Drupal
         if (domains.some(d => d.php.drupalRules.computed))
-            files['nginxconfig.io/drupal.conf'] = toConf(drupalConf(global));
+            files['conf.d/drupal.conf'] = toConf(drupalConf(global));
 
         // Magento
         if (domains.some(d => d.php.magentoRules.computed))
-            files['nginxconfig.io/magento.conf'] = toConf(magentoConf());
+            files['conf.d/magento.conf'] = toConf(magentoConf());
 
         // Joomla
         if (domains.some(d => d.php.joomlaRules.computed))
-            files['nginxconfig.io/joomla.conf'] = toConf(joomlaConf());
+            files['conf.d/joomla.conf'] = toConf(joomlaConf());
 
     } else {
         // PHP
         if (domains.some(d => d.php.wordPressRules.computed))
-            files['nginxconfig.io/php_fastcgi.conf'] = toConf(phpConf(domains));
+            files['conf.d/php_fastcgi.conf'] = toConf(phpConf(domains));
     }
 
     const query = shareQuery(domains.map((domain, index) => [domain, index]).filter(d => d[0] !== null), global);

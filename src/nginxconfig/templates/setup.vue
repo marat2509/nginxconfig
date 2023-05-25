@@ -96,7 +96,7 @@ THE SOFTWARE.
             },
             tarName() {
                 const domains = this.$props.data.domains.filter(d => d !== null).map(d => d.server.domain.computed);
-                return `nginxconfig.io-${domains.join(',')}.tar.gz`;
+                return `nginxconfig-${domains.join(',')}.tar.gz`;
             },
         },
         mounted() {

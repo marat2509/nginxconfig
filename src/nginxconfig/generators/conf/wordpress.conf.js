@@ -32,7 +32,7 @@ export default (global, domain) => {
 
     config['# WordPress: allow TinyMCE'] = '';
     config['location = /wp-includes/js/tinymce/wp-tinymce.php'] = {
-        include: 'nginxconfig.io/php_fastcgi.conf',
+        include: 'conf.d/php_fastcgi.conf',
     };
 
     config['# WordPress: deny wp-content, wp-includes php files'] = '';
@@ -62,7 +62,7 @@ export default (global, domain) => {
         config['# WordPress: throttle wp-login.php'] = '';
         config['location = /wp-login.php'] = {
             limit_req: 'zone=login burst=2 nodelay',
-            include: 'nginxconfig.io/php_fastcgi.conf',
+            include: 'conf.d/php_fastcgi.conf',
         };
         if (domain.php.wordPressRules.computed) {
             config['location = /wp-login.php'].fastcgi_pass = domain.php.phpBackupServer.computed !== ''

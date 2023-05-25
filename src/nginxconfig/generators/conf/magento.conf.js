@@ -33,7 +33,7 @@ export default () => {
 
         '# allow index.php': '',
         'location ~ ^/setup/index.php': {
-            include: 'nginxconfig.io/php_fastcgi.conf',
+            include: 'conf.d/php_fastcgi.conf',
         },
 
         '# deny everything except pub': '',
@@ -48,7 +48,7 @@ export default () => {
 
         '# allow index.php': '',
         'location ~ ^/update/index.php': {
-            include: 'nginxconfig.io/php_fastcgi.conf',
+            include: 'conf.d/php_fastcgi.conf',
         },
 
         '# deny everything except pub': '',

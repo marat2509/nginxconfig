@@ -63,7 +63,7 @@ THE SOFTWARE.
                     <span v-html="$t('templates.setupSections.download.createABackupOfYourCurrentNginxConfiguration')"></span>
                     <br />
                     <BashPrism
-                        cmd="tar -czvf nginx_$(date +'%F_%H-%M-%S').tar.gz nginx.conf sites-available/ sites-enabled/ nginxconfig.io/"
+                        cmd="tar -czvf nginx_$(date +'%F_%H-%M-%S').tar.gz nginx.conf sites-available/ sites-enabled/ conf.d/"
                         @copied="codeCopiedEvent('Create nginx config backup tar')"
                     ></BashPrism>
                 </p>
