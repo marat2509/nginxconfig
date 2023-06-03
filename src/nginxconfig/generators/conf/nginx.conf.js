@@ -220,6 +220,7 @@ export default (domains, global) => {
     // Configs!
     config.http.push(['# Load configs', '']);
     config.http.push(['include', [
+        `${global.nginx.nginxConfigDirectory.computed.replace(/\/+$/, '')}/conf.d/default.conf`,
         global.tools.modularizedStructure.computed ? `${global.nginx.nginxConfigDirectory.computed.replace(/\/+$/, '')}/sites-enabled/*` : '',
     ].filter(x => x.length)]);
 
